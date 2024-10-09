@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ConCode</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Upcoming</string>
+    <string name="title_notifications">Finished</string>
+    <string name="title_profile">Profile</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
