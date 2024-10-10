@@ -1,4 +1,4 @@
-package com.fhanafi.mybottomnavigation.ui.notifications
+package com.fhanafi.mybottomnavigation.ui.upcoming
 
 import EventAdapter
 import android.content.Intent
@@ -13,21 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fhanafi.mybottomnavigation.databinding.RecyclerViewWithProgressBinding
 import com.fhanafi.mybottomnavigation.ui.detail.DetailEventActivity
 
-class NotificationsFragment : Fragment() {
+class UpcomingFragment : Fragment() {
 
     private var _binding: RecyclerViewWithProgressBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: NotificationsViewModel
+    private lateinit var viewModel: UpcomingViewModel
     private lateinit var eventAdapter: EventAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RecyclerViewWithProgressBinding.inflate(inflater, container, false)
 
         // Setup ViewModel
-        viewModel = ViewModelProvider(this)[NotificationsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[UpcomingViewModel::class.java]
 
         // Setup RecyclerView and Adapter
         setupRecyclerView()
@@ -36,7 +34,7 @@ class NotificationsFragment : Fragment() {
         observeViewModel()
 
         // Trigger data fetch
-        viewModel.fetchEventsFinishFromApi()
+        viewModel.fetchEventsFromApi()
 
         return binding.root
     }
@@ -54,15 +52,14 @@ class NotificationsFragment : Fragment() {
         binding.recyclerView.addItemDecoration(itemDecoration)
 
         binding.recyclerView.adapter = eventAdapter
+
     }
 
     private fun observeViewModel() {
         viewModel.listEvents.observe(viewLifecycleOwner) { events ->
             eventAdapter.submitList(events)
-            // Hide the ProgressBar when data is received
-//            showLoading(false)
         }
-
+        // Observe the loading state
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
@@ -75,6 +72,7 @@ class NotificationsFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

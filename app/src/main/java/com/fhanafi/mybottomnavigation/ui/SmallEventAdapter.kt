@@ -5,17 +5,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fhanafi.mybottomnavigation.data.response.ListEventsItem
-import com.fhanafi.mybottomnavigation.databinding.ItemEventBinding
+import com.fhanafi.mybottomnavigation.databinding.ItemEventSmallBinding
 
-class EventAdapter(private val onClick: (String) -> Unit) : ListAdapter<ListEventsItem, EventAdapter.EventViewHolder>(DIFF_CALLBACK) {
+class SmallEventAdapter(private val onClick: (String) -> Unit) : ListAdapter<ListEventsItem, SmallEventAdapter.SmallEventViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallEventViewHolder {
         // Use View Binding to inflate the layout for each item
-        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding)
+        val binding = ItemEventSmallBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SmallEventViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SmallEventViewHolder, position: Int) {
         // Get the event at the current position
         val event = getItem(position)
         holder.bind(event) // Bind the event data to the ViewHolder
@@ -25,16 +25,15 @@ class EventAdapter(private val onClick: (String) -> Unit) : ListAdapter<ListEven
     }
 
     // ViewHolder class using View Binding
-    class EventViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
+    class SmallEventViewHolder(private val binding: ItemEventSmallBinding) : RecyclerView.ViewHolder(binding.root) {
         // Bind the event data to the views
         fun bind(event: ListEventsItem) {
-            binding.tvEventTitle.text = event.name
+            binding.tvEventTitleHor.text = event.name // Update TextView ID
 
             // Load the image using Glide
             Glide.with(binding.root.context)
                 .load(event.mediaCover) // Use the image URL from your data model
-                .into(binding.imgEventPhoto) // Make sure you have an ImageView in your layout
-
+                .into(binding.imgEventPhotoHor) // Make sure you have an ImageView in your layout
         }
     }
 
