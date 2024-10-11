@@ -24,17 +24,13 @@ class UpcomingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RecyclerViewWithProgressBinding.inflate(inflater, container, false)
 
-        // Setup ViewModel
         viewModel = ViewModelProvider(this)[UpcomingViewModel::class.java]
 
-        // Setup RecyclerView and Adapter
         setupRecyclerView()
 
-        // Observe LiveData
         observeViewModel()
 
-        // Trigger data fetch
-        viewModel.fetchEventsFromApi()
+        viewModel.fetchEventsUpcomingFromApi()
 
         return binding.root
     }
@@ -42,12 +38,12 @@ class UpcomingFragment : Fragment() {
     private fun setupRecyclerView() {
         eventAdapter = EventAdapter{ eventId ->
             val intent = Intent(context, DetailEventActivity::class.java)
-            intent.putExtra("EVENT_ID", eventId) // Ensure eventId is of type String
+            intent.putExtra("EVENT_ID", eventId)
             startActivity(intent)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // Adding divider between items
+        // menambahkan pemisah antara item
         val itemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         binding.recyclerView.addItemDecoration(itemDecoration)
 
@@ -59,7 +55,6 @@ class UpcomingFragment : Fragment() {
         viewModel.listEvents.observe(viewLifecycleOwner) { events ->
             eventAdapter.submitList(events)
         }
-        // Observe the loading state
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
@@ -72,7 +67,6 @@ class UpcomingFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

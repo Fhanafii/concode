@@ -1,4 +1,4 @@
-package com.fhanafi.mybottomnavigation.ui.notifications
+package com.fhanafi.mybottomnavigation.ui.finished
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class NotificationsViewModel : ViewModel() {
+class FinishedViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -25,16 +25,15 @@ class NotificationsViewModel : ViewModel() {
         const val QUERY_FINISH = "devcoach"
     }
 
-    // Expose fetch method, don't call it directly in init
     fun fetchEventsFinishFromApi() {
-        _isLoading.value = true // Set loading to true
+        _isLoading.value = true
         val client = ApiConfig.getApiService().getEventsWithQuery(ACTIVE_FINISH.toString(), QUERY_FINISH)
         client.enqueue(object : Callback<ListEventResponse> {
             override fun onResponse(
                 call: Call<ListEventResponse>,
                 response: Response<ListEventResponse>
             ) {
-                _isLoading.value = false // Set loading to false
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     response.body()?.let {
                         _listEvents.value = it.listEvents

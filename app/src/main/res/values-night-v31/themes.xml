@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyBottomNavigation" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:windowSplashScreenBackground">@color/your_splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/codesplash</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/your_icon_background
+        </item>
+
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/your_splash_background</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/your_icon_background</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

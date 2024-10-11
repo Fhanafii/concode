@@ -22,28 +22,24 @@ class DetailEventActivity : AppCompatActivity() {
         binding = ActivityDetailEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up the ActionBar (or Toolbar) and enable the back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Event Detail"
 
         val eventId = intent.getStringExtra("EVENT_ID") ?: return
         viewModel = ViewModelProvider(this)[DetailEventViewModel::class.java]
 
         viewModel.getDetailEvent(eventId)
 
-        // Observe data
         viewModel.detailEvent.observe(this) { event ->
-            bindEventData(event) // event will now be of type ListEventsItem
+            bindEventData(event)
         }
 
-        // Observe loading state
         viewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
-                binding.progressBar1.visibility = View.VISIBLE // Show ProgressBar
-                binding.goToWeb.visibility = View.GONE // Hide Button
+                binding.progressBar1.visibility = View.VISIBLE
+                binding.goToWeb.visibility = View.GONE
             } else {
-                binding.progressBar1.visibility = View.GONE // Hide ProgressBar
-                binding.goToWeb.visibility = View.VISIBLE // Show Button
+                binding.progressBar1.visibility = View.GONE
+                binding.goToWeb.visibility = View.VISIBLE
             }
         }
     }
@@ -51,16 +47,20 @@ class DetailEventActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun bindEventData(event: ListEventsItem) {
         event.let {
+            supportActionBar?.title = it.name
+
             Glide.with(this).load(it.mediaCover).into(binding.image)
             binding.title.text = it.name
+            binding.ownerName.text = it.ownerName
             binding.subTitle.text = "Informasi\n\n ${it.summary}"
-            binding.sisakouta.text = "Sisa Kouta: ${it.quota}"
-            binding.waktumulai.text = it.beginTime
+            binding.sisakouta.text = "Sisa Kouta: ${it.registrants}"
+            binding.kouta.text = "Kouta: ${it.quota}"
+            binding.waktumulai.text = "Mulai: ${it.beginTime}"
+            binding.waktuselesai.text = "Selesai: ${it.endTime}"
 
-            // Clean the HTML content
+            // Membersihkan HTML content
             val cleanedHtml = cleanHtmlContent(it.description)
 
-            // Render the cleaned HTML content
             binding.text.text = HtmlCompat.fromHtml(
                 cleanedHtml,
                 HtmlCompat.FROM_HTML_MODE_LEGACY
@@ -71,7 +71,7 @@ class DetailEventActivity : AppCompatActivity() {
             }
         }
     }
-
+    // Fungsi untuk membersihkan HTML content dari gambar
     private fun cleanHtmlContent(html: String): String {
         val imgRegex = "<img[^>]*>".toRegex()
         var cleanedHtml = html.replace(imgRegex, "")
@@ -89,11 +89,11 @@ class DetailEventActivity : AppCompatActivity() {
         }
     }
 
-    // Handle the Up button action
+    // tombol back di toolbar untuk kembali ke activity sebelumnya
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish() // Navigate back when the back button is pressed
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)

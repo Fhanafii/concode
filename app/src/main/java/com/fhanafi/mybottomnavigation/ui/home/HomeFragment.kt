@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fhanafi.mybottomnavigation.databinding.FragmentHomeBinding
 import com.fhanafi.mybottomnavigation.ui.detail.DetailEventActivity
-import com.fhanafi.mybottomnavigation.ui.notifications.NotificationsViewModel
+import com.fhanafi.mybottomnavigation.ui.finished.FinishedViewModel
 import com.fhanafi.mybottomnavigation.ui.upcoming.UpcomingViewModel
 
 class HomeFragment : Fragment() {
 
     private lateinit var eventAdapter: EventAdapter
     private lateinit var smallEventAdapter: SmallEventAdapter // Declare the new adapter
-    private lateinit var viewModel: NotificationsViewModel
+    private lateinit var viewModel: FinishedViewModel
     private lateinit var viewModelSmall: UpcomingViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // Initialize the ViewModel for events
-        viewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FinishedViewModel::class.java)
         // Initialize the ViewModel for small events
         viewModelSmall = ViewModelProvider(this).get(UpcomingViewModel::class.java)
 
@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         showLoading(true)
         // Fetch events from the API
         viewModel.fetchEventsFinishFromApi()
-        viewModelSmall.fetchEventsFromApi()
+        viewModelSmall.fetchEventsUpcomingFromApi()
 
         observeViewModel()
 

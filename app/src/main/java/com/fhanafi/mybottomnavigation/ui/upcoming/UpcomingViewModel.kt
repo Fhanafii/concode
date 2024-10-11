@@ -26,8 +26,7 @@ class UpcomingViewModel : ViewModel() {
         const val QUERY = "devcoach"
     }
 
-    // Expose fetch method, don't call it directly in init
-    fun fetchEventsFromApi() {
+    fun fetchEventsUpcomingFromApi() {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getEventsWithQuery(ACTIVE.toString(), QUERY)
         client.enqueue(object : Callback<ListEventResponse> {

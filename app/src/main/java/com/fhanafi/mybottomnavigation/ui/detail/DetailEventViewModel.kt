@@ -1,14 +1,12 @@
 package com.fhanafi.mybottomnavigation.ui.detail
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fhanafi.mybottomnavigation.data.response.DetailEventResponse
 import com.fhanafi.mybottomnavigation.data.response.ListEventsItem
 import com.fhanafi.mybottomnavigation.data.retrofit.ApiConfig
-import com.fhanafi.mybottomnavigation.databinding.ActivityDetailEventBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,12 +25,11 @@ class DetailEventViewModel : ViewModel() {
     private val apiService = ApiConfig.getApiService()
 
     fun getDetailEvent(eventId: String) {
-        _isLoading.value = true // Set loading to true when starting the API call
+        _isLoading.value = true
         apiService.getDetailEvent(eventId).enqueue(object : Callback<DetailEventResponse> {
             override fun onResponse(call: Call<DetailEventResponse>, response: Response<DetailEventResponse>) {
-                _isLoading.value = false // Set loading to false when API call is finished
+                _isLoading.value = false
                 if (response.isSuccessful) {
-                    // Use the event object directly from DetailEventResponse
                     response.body()?.event?.let { event ->
                         _detailEvent.postValue(event)
                     } ?: run {
@@ -44,7 +41,7 @@ class DetailEventViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<DetailEventResponse>, t: Throwable) {
-                _isLoading.value = false // Set loading to false on failure
+                _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
