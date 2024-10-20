@@ -53,8 +53,8 @@ class DetailEventActivity : AppCompatActivity() {
             binding.title.text = it.name
             binding.ownerName.text = it.ownerName
             binding.subTitle.text = "Informasi\n\n ${it.summary}"
-            binding.sisakouta.text = "Sisa Kouta: ${it.registrants}"
-            binding.kouta.text = "Kouta: ${it.quota}"
+            binding.sisakouta.text = "Sisa Kouta: ${it.quota - it.registrants}"
+            //binding.kouta.text = "Kouta: ${it.quota}"
             binding.waktumulai.text = "Mulai: ${it.beginTime}"
             binding.waktuselesai.text = "Selesai: ${it.endTime}"
 

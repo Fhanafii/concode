@@ -7,12 +7,9 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
+    // API call without the query parameter
     @GET("events")
-    fun getEventsWithQuery(
-        @Query("active") active: String,
-        @Query("q") query: String
-    ): Call<ListEventResponse>
-
+    fun getEvents(@Query("active") active: String): Call<ListEventResponse>
 
     @GET("events/{id}")
     fun getDetailEvent(@Path("id") id: String): Call<DetailEventResponse>

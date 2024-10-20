@@ -15,6 +15,10 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/baseline_event_busy_24"
         android:title="@string/title_notifications" />
-    
+
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/title_setting" />
 
 </menu>

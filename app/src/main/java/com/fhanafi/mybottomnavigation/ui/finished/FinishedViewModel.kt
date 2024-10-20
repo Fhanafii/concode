@@ -20,19 +20,18 @@ class FinishedViewModel : ViewModel() {
     val listEvents: LiveData<List<ListEventsItem>> get() = _listEvents
 
     companion object {
-        private const val TAG = "DashboardViewModel"
+        private const val TAG = "FinishedViewModel"
         const val ACTIVE_FINISH = 0
-        const val QUERY_FINISH = "devcoach"
     }
 
     fun fetchEventsFinishFromApi() {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getEventsWithQuery(ACTIVE_FINISH.toString(), QUERY_FINISH)
+
+        // Modify the API call to exclude the query parameter
+        val client = ApiConfig.getApiService().getEvents(ACTIVE_FINISH.toString())
+
         client.enqueue(object : Callback<ListEventResponse> {
-            override fun onResponse(
-                call: Call<ListEventResponse>,
-                response: Response<ListEventResponse>
-            ) {
+            override fun onResponse(call: Call<ListEventResponse>, response: Response<ListEventResponse>) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
                     response.body()?.let {

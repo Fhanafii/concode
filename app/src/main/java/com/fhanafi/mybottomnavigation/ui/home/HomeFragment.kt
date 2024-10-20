@@ -34,13 +34,14 @@ class HomeFragment : Fragment() {
 
         // Initialize the adapter and set it to the RecyclerView
         eventAdapter = EventAdapter { eventId -> onEventClick(eventId) } // Ensure the adapter is initialized
-        binding.recyclerViewHorizontal.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewHorizontal.adapter = eventAdapter // Set the adapter immediately
+        binding.recyclerViewVertical.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewVertical.adapter = eventAdapter // Set the adapter immediately
 
         // Initialize the new adapter for the vertical RecyclerView
         smallEventAdapter = SmallEventAdapter { eventId -> onEventClick(eventId) }
-        binding.recyclerViewVertical.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) // Set to horizontal
-        binding.recyclerViewVertical.adapter = smallEventAdapter
+        binding.recyclerViewHorizontal.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) // Set to horizontal
+        binding.recyclerViewHorizontal.adapter = smallEventAdapter
+
 
         // Start loading when fetching events
         showLoading(true)
@@ -94,4 +95,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
