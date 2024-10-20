@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_upcoming, R.id.navigation_notifications, R.id.navigation_setting
+                R.id.navigation_home, R.id.navigation_upcoming, R.id.navigation_notifications,R.id.navigation_favorite ,R.id.navigation_setting
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_home -> "Home"
             R.id.navigation_upcoming -> "Upcoming Events"
             R.id.navigation_notifications -> "Finished Events"
+            R.id.navigation_favorite -> "Favorite"
             R.id.navigation_setting -> "Setting"
             else -> "My App"
         }
