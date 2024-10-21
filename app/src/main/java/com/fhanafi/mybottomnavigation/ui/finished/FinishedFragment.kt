@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fhanafi.mybottomnavigation.R
-import com.fhanafi.mybottomnavigation.data.response.ListEventsItem
-import com.fhanafi.mybottomnavigation.data.retrofit.ApiConfig
+import com.fhanafi.mybottomnavigation.data.remote.response.ListEventsItem
+import com.fhanafi.mybottomnavigation.data.remote.retrofit.ApiConfig
 import com.fhanafi.mybottomnavigation.databinding.RecyclerViewWithProgressBinding
 import com.fhanafi.mybottomnavigation.ui.detail.DetailEventActivity
 import kotlinx.coroutines.launch

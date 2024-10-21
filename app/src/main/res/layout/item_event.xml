@@ -33,6 +33,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:src="@tools:sample/avatars" />
 
+            <ImageView
+                android:id="@+id/img_favorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:padding="4dp"
+                app:srcCompat="@drawable/heart_plus_24px"
+                app:layout_constraintTop_toTopOf="@+id/img_event_photo"
+                app:layout_constraintEnd_toEndOf="@+id/img_event_photo" />
+
             <TextView
                 android:id="@+id/tv_event_title"
                 android:layout_width="0dp"

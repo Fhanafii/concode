@@ -1,4 +1,4 @@
-package com.fhanafi.mybottomnavigation.data.response
+package com.fhanafi.mybottomnavigation.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

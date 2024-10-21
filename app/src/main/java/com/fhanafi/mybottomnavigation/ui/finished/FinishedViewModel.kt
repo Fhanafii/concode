@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fhanafi.mybottomnavigation.data.response.ListEventResponse
-import com.fhanafi.mybottomnavigation.data.response.ListEventsItem
-import com.fhanafi.mybottomnavigation.data.retrofit.ApiConfig
+import com.fhanafi.mybottomnavigation.data.remote.response.ListEventResponse
+import com.fhanafi.mybottomnavigation.data.remote.response.ListEventsItem
+import com.fhanafi.mybottomnavigation.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

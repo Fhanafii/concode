@@ -10,12 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
-import com.fhanafi.mybottomnavigation.data.response.ListEventsItem
+import com.fhanafi.mybottomnavigation.R
+import com.fhanafi.mybottomnavigation.data.local.room.EventDatabase
+import com.fhanafi.mybottomnavigation.data.remote.response.ListEventsItem
 import com.fhanafi.mybottomnavigation.databinding.ActivityDetailEventBinding
 
 class DetailEventActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailEventBinding
     private lateinit var viewModel: DetailEventViewModel
+    private lateinit var eventDatabase: EventDatabase
+    private var currentEvent: ListEventsItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,69 +31,82 @@ class DetailEventActivity : AppCompatActivity() {
         val eventId = intent.getStringExtra("EVENT_ID") ?: return
         viewModel = ViewModelProvider(this)[DetailEventViewModel::class.java]
 
-        viewModel.getDetailEvent(eventId)
+        // Initialize the database
+        eventDatabase = EventDatabase.getDatabase(this)
 
+        setupObservers()
+        setupListeners()
+
+        // Fetch event details
+        viewModel.getDetailEvent(eventId)
+    }
+
+    private fun setupObservers() {
         viewModel.detailEvent.observe(this) { event ->
+            currentEvent = event
             bindEventData(event)
+            viewModel.checkIfFavorite(event.id.toString(), eventDatabase)
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                binding.progressBar1.visibility = View.VISIBLE
-                binding.goToWeb.visibility = View.GONE
-            } else {
-                binding.progressBar1.visibility = View.GONE
-                binding.goToWeb.visibility = View.VISIBLE
+            binding.progressBar1.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.goToWeb.visibility = if (isLoading) View.GONE else View.VISIBLE
+        }
+
+        viewModel.isFavorite.observe(this) { isFavorite ->
+            // Update the favorite icon based on isFavorite status
+            binding.imgFavorite.setImageResource(
+                if (isFavorite) R.drawable.heart_24px else R.drawable.favorite_24px
+            )
+        }
+
+    }
+
+    private fun setupListeners() {
+        // Set up the Favorite button click listener
+        binding.favButtonContainer.setOnClickListener {
+            currentEvent?.let { event ->
+                viewModel.toggleFavoriteStatus(event, eventDatabase)
             }
+        }
+
+        // Set up the Go to Web button click listener
+        binding.goToWeb.setOnClickListener {
+            currentEvent?.link?.let { link -> openLinkInBrowser(link) }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun bindEventData(event: ListEventsItem) {
-        event.let {
-            supportActionBar?.title = it.name
+        supportActionBar?.title = event.name
 
-            Glide.with(this).load(it.mediaCover).into(binding.image)
-            binding.title.text = it.name
-            binding.ownerName.text = it.ownerName
-            binding.subTitle.text = "Informasi\n\n ${it.summary}"
-            binding.sisakouta.text = "Sisa Kouta: ${it.quota - it.registrants}"
-            //binding.kouta.text = "Kouta: ${it.quota}"
-            binding.waktumulai.text = "Mulai: ${it.beginTime}"
-            binding.waktuselesai.text = "Selesai: ${it.endTime}"
+        Glide.with(this).load(event.mediaCover).into(binding.image)
+        binding.title.text = event.name
+        binding.ownerName.text = event.ownerName
+        binding.subTitle.text = "Informasi\n\n ${event.summary}"
+        binding.sisakouta.text = "Sisa Kouta: ${event.quota - event.registrants}"
+        binding.waktumulai.text = "Mulai: ${event.beginTime}"
+        binding.waktuselesai.text = "Selesai: ${event.endTime}"
 
-            // Membersihkan HTML content
-            val cleanedHtml = cleanHtmlContent(it.description)
-
-            binding.text.text = HtmlCompat.fromHtml(
-                cleanedHtml,
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-
-            binding.goToWeb.setOnClickListener {
-                openLinkInBrowser(event.link)
-            }
-        }
+        val cleanedHtml = cleanHtmlContent(event.description)
+        binding.text.text = HtmlCompat.fromHtml(cleanedHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-    // Fungsi untuk membersihkan HTML content dari gambar
+
     private fun cleanHtmlContent(html: String): String {
         val imgRegex = "<img[^>]*>".toRegex()
-        var cleanedHtml = html.replace(imgRegex, "")
-        cleanedHtml = cleanedHtml.replace("Time", "")
+        return html.replace(imgRegex, "")
+            .replace("Time", "")
             .replace("Session", "")
             .replace("Speaker", "")
-        cleanedHtml = cleanedHtml.replace("\\s+".toRegex(), " ").trim()
-        return cleanedHtml
+            .replace("\\s+".toRegex(), " ")
+            .trim()
     }
 
-    private fun openLinkInBrowser(url: String?) {
-        url?.let {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-            startActivity(intent)
-        }
+    private fun openLinkInBrowser(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
-    // tombol back di toolbar untuk kembali ke activity sebelumnya
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

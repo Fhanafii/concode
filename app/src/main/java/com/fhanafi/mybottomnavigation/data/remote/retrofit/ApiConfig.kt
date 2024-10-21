@@ -1,4 +1,4 @@
-package com.fhanafi.mybottomnavigation.data.retrofit
+package com.fhanafi.mybottomnavigation.data.remote.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

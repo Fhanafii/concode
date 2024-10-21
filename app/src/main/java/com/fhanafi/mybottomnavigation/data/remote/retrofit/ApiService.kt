@@ -1,7 +1,7 @@
-package com.fhanafi.mybottomnavigation.data.retrofit
+package com.fhanafi.mybottomnavigation.data.remote.retrofit
 
-import com.fhanafi.mybottomnavigation.data.response.DetailEventResponse
-import com.fhanafi.mybottomnavigation.data.response.ListEventResponse
+import com.fhanafi.mybottomnavigation.data.remote.response.DetailEventResponse
+import com.fhanafi.mybottomnavigation.data.remote.response.ListEventResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*

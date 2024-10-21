@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
-
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,6 +42,10 @@ android {
 }
 
 dependencies {
+    // Room dependencies
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.room.compiler)
+    implementation("androidx.room:room-ktx:2.5.2")
     // Retrofit for API calls
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
