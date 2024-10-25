@@ -27,7 +27,6 @@ class FinishedViewModel : ViewModel() {
     fun fetchEventsFinishFromApi() {
         _isLoading.value = true
 
-        // Modify the API call to exclude the query parameter
         val client = ApiConfig.getApiService().getEvents(ACTIVE_FINISH.toString())
 
         client.enqueue(object : Callback<ListEventResponse> {

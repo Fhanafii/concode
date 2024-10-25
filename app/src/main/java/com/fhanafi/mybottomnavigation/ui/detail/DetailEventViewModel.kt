@@ -54,7 +54,6 @@ class DetailEventViewModel : ViewModel() {
         })
     }
 
-    // Check if an event is already marked as favorite in the local database
     fun checkIfFavorite(eventId: String, database: EventDatabase) {
         viewModelScope.launch {
             val favoriteEvent = database.eventDao().getFavoriteEventById(eventId)
@@ -62,7 +61,6 @@ class DetailEventViewModel : ViewModel() {
         }
     }
 
-    // Toggle favorite status for an event
     fun toggleFavoriteStatus(event: ListEventsItem, database: EventDatabase) {
         viewModelScope.launch {
             val favoriteEvent = EventEntity(
@@ -73,11 +71,9 @@ class DetailEventViewModel : ViewModel() {
 
             val existingEvent = database.eventDao().getFavoriteEventById(event.id.toString())
             if (existingEvent == null) {
-                // Add to favorites
                 database.eventDao().insertFavoriteEvent(favoriteEvent)
                 _isFavorite.postValue(true)
             } else {
-                // Remove from favorites
                 database.eventDao().deleteFavoriteEventById(event.id.toString())
                 _isFavorite.postValue(false)
             }

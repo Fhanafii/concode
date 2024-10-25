@@ -1,7 +1,7 @@
 package com.fhanafi.mybottomnavigation.ui.home
 
 import EventAdapter
-import SmallEventAdapter // Make sure to import your new adapter
+import SmallEventAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ import com.fhanafi.mybottomnavigation.ui.upcoming.UpcomingViewModel
 class HomeFragment : Fragment() {
 
     private lateinit var eventAdapter: EventAdapter
-    private lateinit var smallEventAdapter: SmallEventAdapter // Declare the new adapter
+    private lateinit var smallEventAdapter: SmallEventAdapter
     private lateinit var viewModel: FinishedViewModel
     private lateinit var viewModelSmall: UpcomingViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -27,25 +27,19 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Initialize the ViewModel for events
         viewModel = ViewModelProvider(this).get(FinishedViewModel::class.java)
-        // Initialize the ViewModel for small events
         viewModelSmall = ViewModelProvider(this).get(UpcomingViewModel::class.java)
 
-        // Initialize the adapter and set it to the RecyclerView
         eventAdapter = EventAdapter { eventId -> onEventClick(eventId) } // Ensure the adapter is initialized
         binding.recyclerViewVertical.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewVertical.adapter = eventAdapter // Set the adapter immediately
 
-        // Initialize the new adapter for the vertical RecyclerView
         smallEventAdapter = SmallEventAdapter { eventId -> onEventClick(eventId) }
         binding.recyclerViewHorizontal.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) // Set to horizontal
         binding.recyclerViewHorizontal.adapter = smallEventAdapter
 
 
-        // Start loading when fetching events
         showLoading(true)
-        // Fetch events from the API
         viewModel.fetchEventsFinishFromApi()
         viewModelSmall.fetchEventsUpcomingFromApi()
 
@@ -55,19 +49,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // Observe events for the horizontal RecyclerView
         viewModel.listEvents.observe(viewLifecycleOwner) { events ->
             eventAdapter.submitList(events)
-            showLoading(false) // Stop loading after events are loaded
+            showLoading(false)
         }
 
-        // Observe finished events for the vertical RecyclerView
         viewModelSmall.listEvents.observe(viewLifecycleOwner) { finishedEvents ->
             smallEventAdapter.submitList(finishedEvents)
-            showLoading(false) // Stop loading after finished events are loaded
+            showLoading(false)
         }
 
-        // Observe the loading state
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
@@ -85,7 +76,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun onEventClick(eventId: String) {
-        // Handle click event
         val intent = Intent(context, DetailEventActivity::class.java)
         intent.putExtra("EVENT_ID", eventId)
         startActivity(intent)

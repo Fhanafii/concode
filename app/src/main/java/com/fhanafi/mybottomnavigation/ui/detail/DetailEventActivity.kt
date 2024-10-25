@@ -31,13 +31,11 @@ class DetailEventActivity : AppCompatActivity() {
         val eventId = intent.getStringExtra("EVENT_ID") ?: return
         viewModel = ViewModelProvider(this)[DetailEventViewModel::class.java]
 
-        // Initialize the database
         eventDatabase = EventDatabase.getDatabase(this)
 
         setupObservers()
         setupListeners()
 
-        // Fetch event details
         viewModel.getDetailEvent(eventId)
     }
 
@@ -51,6 +49,7 @@ class DetailEventActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar1.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.goToWeb.visibility = if (isLoading) View.GONE else View.VISIBLE
+            binding.favButtonContainer.visibility = if (isLoading) View.GONE else View.VISIBLE // untuk menunda floating button agar tidak muncul sebelum loading
         }
 
         viewModel.isFavorite.observe(this) { isFavorite ->
@@ -63,14 +62,12 @@ class DetailEventActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // Set up the Favorite button click listener
         binding.favButtonContainer.setOnClickListener {
             currentEvent?.let { event ->
                 viewModel.toggleFavoriteStatus(event, eventDatabase)
             }
         }
 
-        // Set up the Go to Web button click listener
         binding.goToWeb.setOnClickListener {
             currentEvent?.link?.let { link -> openLinkInBrowser(link) }
         }
@@ -84,6 +81,7 @@ class DetailEventActivity : AppCompatActivity() {
         binding.title.text = event.name
         binding.ownerName.text = event.ownerName
         binding.subTitle.text = "Informasi\n\n ${event.summary}"
+        binding.kouta.text = "Kouta: ${event.quota}"
         binding.sisakouta.text = "Sisa Kouta: ${event.quota - event.registrants}"
         binding.waktumulai.text = "Mulai: ${event.beginTime}"
         binding.waktuselesai.text = "Selesai: ${event.endTime}"

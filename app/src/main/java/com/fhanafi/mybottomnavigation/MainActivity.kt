@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             setActionBarTitle(getTitleForDestination(destination.id))
         }
 
-        // Mengambil pengaturan tema dan mengimplementasikan saat startup
         val pref = SettingPreferences.getInstance(dataStore)
         val settingViewModel = ViewModelProvider(this, SettingsViewModelFactory(pref))[SettingViewModel::class.java]
 
