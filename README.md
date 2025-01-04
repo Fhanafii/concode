@@ -1,5 +1,7 @@
 ![Project Overview](cover.png)
 
+This project was result for submission in Android Fundamental on Dicoding
+
 ## Overview 📃
 
 Welcome to Concode, A modern and elegant Android application to explore coding events, built as a submission for the Dicoding course. This project implements features like a Bottom Navigation, API integration, local database storage, and a persistent dark mode.
@@ -16,7 +18,7 @@ Welcome to Concode, A modern and elegant Android application to explore coding e
 
 **Cloned the repository**:
 ```bash
-   git clone https://github.com/Fhanafii/concode.git
+git clone https://github.com/Fhanafii/concode.git
 ```
 
 ## Support 🤔
